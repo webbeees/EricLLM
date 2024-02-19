@@ -191,7 +191,7 @@ try:
                 #settings.append(settings_proto.clone())
                 settings.append(settings_clone)
                 ids_lookup[len(input_ids) - 1] = response_event #Should I change this to a hash? No because duplicates would still happen?
-            
+
             # Just skip all this since it doesn't work if using the vllm engine
 
             if(args.engine == "vLLM"):
@@ -209,7 +209,7 @@ try:
                 r = random.random()
 
                 for i in range(len(input_ids)):
-                    token, _, _ = ExLlamaV2Sampler.sample(logits[i:i + 1, :, :], settings[i], input_ids[i], r, tokenizer)
+                    token, *_ = ExLlamaV2Sampler.sample(logits[i:i + 1, :, :], settings[i], input_ids[i], r, tokenizer)
                     tempIDs = torch.cat([input_ids[i], token], dim=1)
                     input_ids[i] = tempIDs
 
@@ -319,7 +319,7 @@ async def generate(prompt: PromptRequest):
 
 def setup_model():
     global model, tokenizer, loras
-    
+
     if(args.engine == "vLLM"):
         import ray, torch
         ray.shutdown()
