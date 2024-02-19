@@ -215,8 +215,8 @@ try:
 
                     token_count['gen_tokens'] += 1
                     token_count['total_tokens'] += 1
-                    #stop_token = tokenizer.encode("</s>")
-                    if token.item() == tokenizer.eos_token_id or caches[i].current_seq_len == caches[i].max_seq_len:
+                    stop_token = tokenizer.encode("\n")
+                    if token.item() == tokenizer.eos_token_id or token.item() in stop_token or caches[i].current_seq_len == caches[i].max_seq_len:
                         if token.item() == settings[i].eos_token_id:
                             print(f"Stopping for token: {token.item()}, settings eos: {settings[i].eos_token_id}, tokenizer eos: {tokenizer.eos_token_id}")
                         eos.insert(0, i)  # Indices of completed prompts
