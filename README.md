@@ -12,7 +12,7 @@ Update 12/29/2023: I improved the way the API handles requests. It's now about 2
 If you aren't using this inside a Text-Generation-WebUI root, you'll need to install the pre-reqs below. Otherwise, you can just drop the script in the root of TGW and run it within the cmd_windows.bat (or equivalent).
 
 ```
-git clone https://github.com/epolewski/EricLLM
+git clone https://github.com/webbeees/EricLLM
 cd EricLLM
 pip install -r requirements.txt
 ```
