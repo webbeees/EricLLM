@@ -339,9 +339,9 @@ def setup_model():
     config.scale_alpha_value = args.alpha_value
     config.max_seq_len = args.max_model_len
     config.max_input_len = args.max_input_len
-    #config.num_experts_per_token = 2
-    #config.num_experts_per_tok = 2
-    #config.num_experts = args.num_experts
+    config.num_experts_per_token = 2
+    config.num_experts_per_tok = 2
+    config.num_experts = 8
     #config.num_key_value_heads = args.num_experts
     #config.num_local_experts = 2
     #config.q_handle = 2
