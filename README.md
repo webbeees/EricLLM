@@ -16,11 +16,13 @@ apt-get update
 apt-get install git-lfs
 git lfs install
 
-git clone https://huggingface.co/LoneStriker/Mixtral-8x7B-Instruct-v0.1-3.0bpw-h6-exl2
-
 git clone https://github.com/webbeees/EricLLM
 cd EricLLM
 pip install -r requirements.txt
+
+git clone https://huggingface.co/LoneStriker/Mixtral-8x7B-Instruct-v0.1-3.0bpw-h6-exl2
+
+
 
 python ericLLM.py --model Mixtral-8x7B-Instruct-v0.1-3.0bpw-h6-exl2 --max_prompts 3 --num_workers 5
 
