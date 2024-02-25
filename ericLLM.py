@@ -204,13 +204,12 @@ try:
                 if(args.lora):
                     logits = model.forward(inputs, caches, input_mask=None, loras = loras).float().cpu()
                 else:
-              #      logits = model.forward(inputs, caches, input_mask=None).float().cpu()
+                    logits = model.forward(inputs, caches, input_mask=None).float().cpu()
                 eos = []
-                    token, *_ = ExLlamaV2Sampler.sample(logits[i:i + 1, :, :], settings[i], input_ids[i], r, tokenizer)
                 r = random.random()
 
                 for i in range(len(input_ids)):
-                    token, _, _ = ExLlamaV2Sampler.sample(logits[i:i + 1, :, :], settings[i], input_ids[i], r, tokenizer)
+                    token, *_ = ExLlamaV2Sampler.sample(logits[i:i + 1, :, :], settings[i], input_ids[i], r, tokenizer)
                     tempIDs = torch.cat([input_ids[i], token], dim=1)
                     input_ids[i] = tempIDs
 
@@ -340,15 +339,15 @@ def setup_model():
     config.scale_alpha_value = args.alpha_value
     config.max_seq_len = args.max_model_len
     config.max_input_len = args.max_input_len
-    #config.num_experts_per_token = 2
-    #config.num_experts_per_tok = 2
-    #config.num_experts = args.num_experts
+    config.num_experts_per_token = 2
+    config.num_experts_per_tok = 2
+    config.num_experts = 8
     #config.num_key_value_heads = args.num_experts
     #config.num_local_experts = 2
     #config.q_handle = 2
     config.max_batch_size = 1
     #config.filters = "</s>"
-    config.stop_strings = "</s>"
+    config.stop_strings = "\n"
     config.eos_token_id = 2
     #config.qkv_embed = True
 
@@ -461,4 +460,13 @@ if __name__ == "__main__":
                         #gpu_mapping.append(gpus[j])
                 else:
                     if i % len(gpus) == j:
-                        gpu_mappin
+                        gpu_mapping.append(gpus[j])
+                    else:
+                        gpu_mapping.append(0)
+            text_mapping = ','.join(map(str, gpu_mapping))
+            content += text_mapping + "\n"
+        with open("gpu_assign", 'w', encoding='utf-8') as file:
+            file.write(content)
+
+    print(f"Starting a server at {args.host} on port {args.port}...")
+    uvicorn.run("__main__:app", host=args.host, port=args.port, workers = args.num_workers, http="h11")
